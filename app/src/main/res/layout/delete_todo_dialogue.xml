@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_delete_todo"
+    android:layout_width="300dp"
+    android:layout_height="165dp"
+    android:elevation="8dp"
+    android:foregroundTint="@android:color/transparent"
+    android:foregroundTintMode="@android:color/transparent"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardCornerRadius="35dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dialog_box">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            app:srcCompat="@drawable/ic_baseline_delete_forever_24" />
+
+        <TextView
+            android:id="@+id/warning_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:text="@string/todo_delete_msg"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <TextView
+            android:id="@+id/testView_Confirm_Msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/warning_msg"
+            android:layout_centerHorizontal="true"
+            android:text="@string/are_you_sure"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <Button
+            android:id="@+id/buttonYes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/testView_Confirm_Msg"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="40dp"
+            android:layout_toEndOf="@+id/testView_Confirm_Msg"
+            android:text="@string/yes"
+
+            />
+
+        <Button
+            android:id="@+id/buttonNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/testView_Confirm_Msg"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="40dp"
+            android:layout_toStartOf="@+id/testView_Confirm_Msg"
+            android:layout_toLeftOf="@+id/buttonYes"
+            android:text="@string/no" />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
