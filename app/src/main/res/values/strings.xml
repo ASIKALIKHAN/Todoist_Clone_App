@@ -18,6 +18,7 @@
     <string name="empty_field">Empty task</string>
     <string name="due_date_text">Due Date</string>
     <string name="today">Today</string>
+    <string name="time">Time</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="this_wknd">This Weekend</string>
     <string name="next_week">Next Week</string>

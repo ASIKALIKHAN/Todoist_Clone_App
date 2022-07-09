@@ -16,7 +16,7 @@ public class Utils {
         SimpleDateFormat simpleDateFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance();
 //        simpleDateFormat.applyPattern("EEE, MMM d"); h:mm a
  //       simpleDateFormat.applyPattern("EEE, MMM d, yyyy");
-        simpleDateFormat.applyPattern("EEE, MMM d, yyyy- h:mm a"); //happy to be added smiley Face
+        simpleDateFormat.applyPattern("EEE, MMM d, yyyy-h:mm a"); //happy to be added smiley Face
 
 
         return  simpleDateFormat.format(date);

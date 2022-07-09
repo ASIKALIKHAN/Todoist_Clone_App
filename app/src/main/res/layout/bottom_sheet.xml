@@ -28,13 +28,12 @@
         android:id="@+id/priority_todo_button"
         android:layout_width="77dp"
         android:layout_height="46dp"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
-        app:layout_constraintStart_toEndOf="@+id/today_calendar_button"
+        android:contentDescription="@string/image_description"
+        app:layout_constraintStart_toEndOf="@+id/today_timepicker_button"
         app:layout_constraintTop_toBottomOf="@+id/enter_todo_et"
-        app:srcCompat="@drawable/ic_baseline_outlined_flag_24"
-        android:contentDescription="@string/image_description" />
+        app:srcCompat="@drawable/ic_baseline_outlined_flag_24" />
 
     <ImageButton
         android:id="@+id/save_todo_button"
@@ -42,9 +41,9 @@
         android:layout_height="72dp"
         android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
+        android:contentDescription="TODO"
         android:scaleX="0.4"
         android:scaleY="0.4"
-        android:contentDescription="TODO"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.843"
         app:layout_constraintStart_toEndOf="@+id/priority_todo_button"
@@ -56,13 +55,24 @@
         android:layout_width="74dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
-        android:contentDescription="@string/image_description"
         android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/image_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/enter_todo_et"
         app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
 
+
+    <ImageButton
+        android:id="@+id/today_timepicker_button"
+        android:layout_width="74dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/image_description"
+        app:layout_constraintStart_toEndOf="@+id/today_calendar_button"
+        app:layout_constraintTop_toBottomOf="@+id/enter_todo_et"
+        app:srcCompat="@drawable/ic_baseline_access_time_filled_24" />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/tomorrow_chip"
@@ -122,6 +132,20 @@
         app:layout_constraintTop_toBottomOf="@+id/next_week_chip"
         app:layout_constraintVertical_bias="0.16000003" />
 
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="89dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priority_todo_button"
+        app:layout_constraintVertical_bias="0.0"
+        tools:visibility="gone" />
+
     <RadioGroup
         android:id="@+id/radioGroup_priority"
         android:layout_width="0dp"
@@ -130,10 +154,10 @@
         android:orientation="horizontal"
         android:padding="@dimen/dimen_10"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/priority_todo_button">
+        app:layout_constraintTop_toBottomOf="@+id/priority_todo_button"
+        tools:visibility="visible">
 
         <RadioButton
             android:id="@+id/radioButton_high"
@@ -165,10 +189,10 @@
         android:layout_width="280dp"
         android:layout_height="0dp"
         android:visibility="gone"
-        tools:visibility="visible"
         app:constraint_referenced_ids="calendar_view,next_week_chip,tomorrow_chip,today_chip,warning_msg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="gone" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

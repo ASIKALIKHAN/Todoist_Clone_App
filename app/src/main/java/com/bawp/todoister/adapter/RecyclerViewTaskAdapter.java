@@ -50,6 +50,9 @@ public class RecyclerViewTaskAdapter extends RecyclerView.Adapter<RecyclerViewTa
     public void onBindViewHolder(@NonNull TaskHolder holder, int position) {
         Task task = taskList.get(position);
         String formatted = Utils.formatDate(task.getDueDate());
+        String[] items1 = formatted.split("-");
+        String date = items1[0];
+        String time = items1[1];
 
         ColorStateList colorStateList = new ColorStateList(new int[][]{
                 new int[] {-android.R.attr.state_enabled},
@@ -61,9 +64,12 @@ public class RecyclerViewTaskAdapter extends RecyclerView.Adapter<RecyclerViewTa
                 });
 
         holder.taskTV.setText(task.getTask());
-        holder.dueDateChip.setText(formatted);
+        holder.dueDateChip.setText(date);
         holder.dueDateChip.setTextColor(Utils.priorityColor(task));
         holder.dueDateChip.setChipIconTint(colorStateList);
+        holder.dueTimeChip.setText(time);
+        holder.dueTimeChip.setTextColor(Utils.priorityColor(task));
+        holder.dueTimeChip.setChipIconTint(colorStateList);
         holder.appCompatRadioButton.setButtonTintList(colorStateList);
         holder.appCompatRadioButton.setChecked(task.isRadioSelected);
 
@@ -81,11 +87,13 @@ public class RecyclerViewTaskAdapter extends RecyclerView.Adapter<RecyclerViewTa
         public AppCompatRadioButton appCompatRadioButton;
         public AppCompatTextView taskTV;
         public Chip dueDateChip;
+        public Chip dueTimeChip;
         public TaskHolder(@NonNull View itemView) {
             super(itemView);
             appCompatRadioButton = itemView.findViewById(R.id.todo_radio_button);
             taskTV = itemView.findViewById(R.id.todo_row_todo);
-            dueDateChip = itemView.findViewById(R.id.todo_row_chip);
+            dueDateChip = itemView.findViewById(R.id.todo_row_due_date_chip);
+            dueTimeChip = itemView.findViewById(R.id.todo_row_due_time_chip);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
             appCompatRadioButton.setOnClickListener(this);

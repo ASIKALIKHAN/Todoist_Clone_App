@@ -1,6 +1,7 @@
 package com.bawp.todoister;
 
 
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TimePicker;
 
 import com.bawp.todoister.model.Priority;
 import com.bawp.todoister.model.SharedViewModel;
@@ -33,17 +35,25 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
     Calendar calendar = Calendar.getInstance();
     private EditText enterTodo;
     private ImageButton calendarButton;
+    private ImageButton timeButton;
     private ImageButton priorityButton;
     private RadioGroup priorityRadioGroup;
     private RadioButton selectedRadioButton;
     private int selectedButtonId;
     private ImageButton saveButton;
     private CalendarView calendarView;
+    private TimePicker timePicker;
+    private TimePickerDialog timePickerDialog;
     private Group calendarGroup;
     private Date dueDate;
+    private Date dueTime;
+    private Date setDateNTime;
     private SharedViewModel sharedViewModel;
     private boolean isEdit;
     private Priority priority;
+    private int hour ;
+    private int minute;
+    private  final Calendar calenderForTimeAux = Calendar.getInstance();
 
     public BottomSheetFragment() {
     }
@@ -58,6 +68,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
         calendarGroup = view.findViewById(R.id.calendar_group);
         calendarView = view.findViewById(R.id.calendar_view);
         calendarButton = view.findViewById(R.id.today_calendar_button);
+        timeButton = view.findViewById(R.id.today_timepicker_button);
         enterTodo = view.findViewById(R.id.enter_todo_et);
         saveButton = view.findViewById(R.id.save_todo_button);
         priorityButton = view.findViewById(R.id.priority_todo_button);
@@ -91,17 +102,42 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
                 .get(SharedViewModel.class);
 
         calendarButton.setOnClickListener(view12 -> {
+            Utils.hideSoftKeyboard(view12);
             calendarGroup.setVisibility(calendarGroup.getVisibility() == View.GONE ?
                     View.VISIBLE : View.GONE);
-            Utils.hideSoftKeyboard(view12);
+
 
         });
-        calendarView.setOnDateChangeListener((calendarView, year, month, dayOfMoth) -> {
-            calendar.clear();
-            calendar.set(year, month, dayOfMoth);
-            dueDate = calendar.getTime();
-            Log.d("TIME", "CALENDER: " + dueDate.toString() );
+        timeButton.setOnClickListener(view14 -> {
+//                timePicker.setVisibility(timePicker.getVisibility() == View.GONE ?
+//                        View.VISIBLE : View.GONE);
+           // final Calendar calenderForTimeAux = Calendar.getInstance();
+                 hour = calenderForTimeAux.get(Calendar.HOUR_OF_DAY);
+                 minute = calenderForTimeAux.get(Calendar.MINUTE);
+                 timePickerDialog = new TimePickerDialog(BottomSheetFragment.this.getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                     @Override
+                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
+                         calenderForTimeAux.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                         calenderForTimeAux.set(Calendar.MINUTE, minute);
+                         calenderForTimeAux.set(Calendar.SECOND, 0);
+                         calenderForTimeAux.set(Calendar.MILLISECOND, 0);
+                         dueTime = calenderForTimeAux.getTime();
+                        timePickerDialog.dismiss();
+                     }
+                 },hour ,minute ,false);
+                 timePickerDialog.show();
+
+        });
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMoth) {
+                calendar.clear();
+                calendar.set(year, month, dayOfMoth);
+                dueDate = calendar.getTime();
+                Log.d("TIME", "CALENDER: " + dueDate.toString());
+
+            }
         });
         priorityButton.setOnClickListener(view13 -> {
             Utils.hideSoftKeyboard(view13);
@@ -130,10 +166,15 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
         saveButton.setOnClickListener(view1 -> {
             String task = enterTodo.getText().toString().trim();
 
-            if (!TextUtils.isEmpty(task) && dueDate != null && priority != null) {
+            if (!TextUtils.isEmpty(task) && dueDate != null && priority != null && dueTime != null) {
+                calenderForTimeAux.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+                setDateNTime = calenderForTimeAux.getTime();
                 Task myTask = new Task(task, priority,
-                        dueDate, Calendar.getInstance().getTime(),
+                        setDateNTime, Calendar.getInstance().getTime(),
                         false);
+//                Task myTask = new Task(task, priority,
+//                        dueDate, Calendar.getInstance().getTime(),
+//                        false);
                 if (isEdit) {
                     Task updateTask = sharedViewModel.getSelectedItem().getValue();
 
