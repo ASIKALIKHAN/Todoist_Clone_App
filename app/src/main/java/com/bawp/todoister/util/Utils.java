@@ -10,14 +10,19 @@ import com.bawp.todoister.model.Task;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 public class Utils {
     public static String formatDate(Date date) {
         SimpleDateFormat simpleDateFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance();
-        simpleDateFormat.applyPattern("EEE, MMM d");
+//        simpleDateFormat.applyPattern("EEE, MMM d"); h:mm a
+ //       simpleDateFormat.applyPattern("EEE, MMM d, yyyy");
+        simpleDateFormat.applyPattern("EEE, MMM d, yyyy- h:mm a"); //happy to be added smiley Face
+
 
         return  simpleDateFormat.format(date);
 
     }
+
     public static void hideSoftKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(
                 Context.INPUT_METHOD_SERVICE);

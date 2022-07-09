@@ -4,7 +4,6 @@ package com.bawp.todoister.adapter;
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,9 +61,9 @@ public class RecyclerViewTaskAdapter extends RecyclerView.Adapter<RecyclerViewTa
                 });
 
         holder.taskTV.setText(task.getTask());
-        holder.todayChip.setText(formatted);
-        holder.todayChip.setTextColor(Utils.priorityColor(task));
-        holder.todayChip.setChipIconTint(colorStateList);
+        holder.dueDateChip.setText(formatted);
+        holder.dueDateChip.setTextColor(Utils.priorityColor(task));
+        holder.dueDateChip.setChipIconTint(colorStateList);
         holder.appCompatRadioButton.setButtonTintList(colorStateList);
         holder.appCompatRadioButton.setChecked(task.isRadioSelected);
 
@@ -81,12 +80,12 @@ public class RecyclerViewTaskAdapter extends RecyclerView.Adapter<RecyclerViewTa
     public class TaskHolder extends RecyclerView.ViewHolder  implements View.OnClickListener,View.OnLongClickListener{
         public AppCompatRadioButton appCompatRadioButton;
         public AppCompatTextView taskTV;
-        public Chip todayChip;
+        public Chip dueDateChip;
         public TaskHolder(@NonNull View itemView) {
             super(itemView);
             appCompatRadioButton = itemView.findViewById(R.id.todo_radio_button);
             taskTV = itemView.findViewById(R.id.todo_row_todo);
-            todayChip = itemView.findViewById(R.id.todo_row_chip);
+            dueDateChip = itemView.findViewById(R.id.todo_row_chip);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
             appCompatRadioButton.setOnClickListener(this);

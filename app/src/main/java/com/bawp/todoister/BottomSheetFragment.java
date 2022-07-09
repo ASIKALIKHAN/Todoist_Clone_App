@@ -54,6 +54,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.bottom_sheet, container, false);
+
         calendarGroup = view.findViewById(R.id.calendar_group);
         calendarView = view.findViewById(R.id.calendar_view);
         calendarButton = view.findViewById(R.id.today_calendar_button);
@@ -99,6 +100,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
             calendar.clear();
             calendar.set(year, month, dayOfMoth);
             dueDate = calendar.getTime();
+            Log.d("TIME", "CALENDER: " + dueDate.toString() );
 
         });
         priorityButton.setOnClickListener(view13 -> {
@@ -164,9 +166,11 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
 
     @Override
     public void onClick(View view) {
-
+        Calendar setCal = Calendar.getInstance(); // for getting the required values properly ..issue solved - day was getting added up in the set date with every button click
         int id = view.getId();
         if (id == R.id.today_chip) {
+            calendar.clear();
+            calendar.set(setCal.get(Calendar.YEAR), setCal.get(Calendar.MONTH), setCal.get(Calendar.DAY_OF_MONTH));
             //set data for today
             calendar.add(Calendar.DAY_OF_YEAR, 0);
             dueDate = calendar.getTime();
@@ -174,16 +178,21 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
 
 
         } else if (id == R.id.tomorrow_chip) {
-
+            calendar.clear();
+            calendar.set(setCal.get(Calendar.YEAR), setCal.get(Calendar.MONTH), setCal.get(Calendar.DAY_OF_MONTH));
+            //set data for tomorrow
             calendar.add(Calendar.DAY_OF_YEAR, 1);
             dueDate = calendar.getTime();
-            Log.d("TIME", "onClick: " + dueDate.toString());
+            Log.d("TIME", "TOMORROW: " + dueDate.toString());
+
 
         } else if (id == R.id.next_week_chip) {
-
+            calendar.clear();
+            calendar.set(setCal.get(Calendar.YEAR), setCal.get(Calendar.MONTH), setCal.get(Calendar.DAY_OF_MONTH));
+            //set data for next week
             calendar.add(Calendar.DAY_OF_YEAR, 7);
             dueDate = calendar.getTime();
-            Log.d("TIME", "onClick: " + dueDate.toString());
+            Log.d("TIME", "NEXT WEEK: " + dueDate.toString());
 
         }
 
