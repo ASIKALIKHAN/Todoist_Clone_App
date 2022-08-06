@@ -62,7 +62,10 @@ public class RecyclerViewTaskAdapter extends RecyclerView.Adapter<RecyclerViewTa
                         Color.LTGRAY, //disabled
                         Utils.priorityColor(task)
                 });
-
+        if (taskList.size()==0){
+            listener.onNoTodoEvent(true);
+        }
+        listener.onNoTodoEvent(false);
         holder.taskTV.setText(task.getTask());
         holder.dueDateChip.setText(date);
         holder.dueDateChip.setTextColor(Utils.priorityColor(task));
@@ -77,6 +80,7 @@ public class RecyclerViewTaskAdapter extends RecyclerView.Adapter<RecyclerViewTa
 
     @Override
     public int getItemCount() {
+
         return taskList.size();
 
     }

@@ -132,20 +132,6 @@
         app:layout_constraintTop_toBottomOf="@+id/next_week_chip"
         app:layout_constraintVertical_bias="0.16000003" />
 
-    <TimePicker
-        android:id="@+id/timePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="89dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/priority_todo_button"
-        app:layout_constraintVertical_bias="0.0"
-        tools:visibility="gone" />
-
     <RadioGroup
         android:id="@+id/radioGroup_priority"
         android:layout_width="0dp"
@@ -192,7 +178,7 @@
         app:constraint_referenced_ids="calendar_view,next_week_chip,tomorrow_chip,today_chip,warning_msg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="gone" />
+        tools:visibility="visible" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

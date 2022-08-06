@@ -43,7 +43,10 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-
+    <include
+        layout="@layout/empty_todo_indicator"
+        tools:visibility="visible"
+        android:id="@+id/status_no_todo" />
     <include layout="@layout/bottom_sheet" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

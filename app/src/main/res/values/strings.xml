@@ -41,4 +41,7 @@
     <string name="toast_msg_for_underdevelopment"><![CDATA[New features are coming soon...]]></string>
     <string name="about_msg_new">Todoist App - by ♡AIZU - version 0.1</string>
     <string name="textview">TextView</string>
+    <string name="no_todo_to_show">No Todo to Show</string>
+    <string name="alarm_msg">your todo is here</string>
+    <string name="off_alarmbtn">OFF</string>
 </resources>

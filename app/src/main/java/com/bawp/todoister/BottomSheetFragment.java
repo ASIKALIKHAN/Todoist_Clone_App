@@ -1,7 +1,14 @@
 package com.bawp.todoister;
 
 
+import static android.content.Context.ALARM_SERVICE;
+
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,8 +20,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TimePicker;
 
+
+import com.bawp.todoister.broadcast.TaskBroadcastReceiver;
 import com.bawp.todoister.model.Priority;
 import com.bawp.todoister.model.SharedViewModel;
 import com.bawp.todoister.model.Task;
@@ -32,6 +40,7 @@ import androidx.constraintlayout.widget.Group;
 import androidx.lifecycle.ViewModelProvider;
 
 public class BottomSheetFragment extends BottomSheetDialogFragment implements View.OnClickListener {
+    private static final String TAG = "see";
     Calendar calendar = Calendar.getInstance();
     private EditText enterTodo;
     private ImageButton calendarButton;
@@ -42,7 +51,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
     private int selectedButtonId;
     private ImageButton saveButton;
     private CalendarView calendarView;
-    private TimePicker timePicker;
+  //  private TimePicker timePicker;
     private TimePickerDialog timePickerDialog;
     private Group calendarGroup;
     private Date dueDate;
@@ -54,6 +63,8 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
     private int hour ;
     private int minute;
     private  final Calendar calenderForTimeAux = Calendar.getInstance();
+    public static int count = 0;
+    private AlarmManager alarmManager;
 
     public BottomSheetFragment() {
     }
@@ -100,7 +111,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
         super.onViewCreated(view, savedInstanceState);
         sharedViewModel = new ViewModelProvider(requireActivity())
                 .get(SharedViewModel.class);
-
+        alarmManager = (AlarmManager) requireActivity().getSystemService(ALARM_SERVICE);
         calendarButton.setOnClickListener(view12 -> {
             Utils.hideSoftKeyboard(view12);
             calendarGroup.setVisibility(calendarGroup.getVisibility() == View.GONE ?
@@ -114,30 +125,24 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
            // final Calendar calenderForTimeAux = Calendar.getInstance();
                  hour = calenderForTimeAux.get(Calendar.HOUR_OF_DAY);
                  minute = calenderForTimeAux.get(Calendar.MINUTE);
-                 timePickerDialog = new TimePickerDialog(BottomSheetFragment.this.getActivity(), new TimePickerDialog.OnTimeSetListener() {
-                     @Override
-                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                 timePickerDialog = new TimePickerDialog(BottomSheetFragment.this.getActivity(), (view15, hourOfDay, minute) -> {
 
-                         calenderForTimeAux.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                         calenderForTimeAux.set(Calendar.MINUTE, minute);
-                         calenderForTimeAux.set(Calendar.SECOND, 0);
-                         calenderForTimeAux.set(Calendar.MILLISECOND, 0);
-                         dueTime = calenderForTimeAux.getTime();
-                        timePickerDialog.dismiss();
-                     }
+                     calenderForTimeAux.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                     calenderForTimeAux.set(Calendar.MINUTE, minute);
+                     calenderForTimeAux.set(Calendar.SECOND, 0);
+                     calenderForTimeAux.set(Calendar.MILLISECOND, 0);
+                     dueTime = calenderForTimeAux.getTime();
+                    timePickerDialog.dismiss();
                  },hour ,minute ,false);
                  timePickerDialog.show();
 
         });
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMoth) {
-                calendar.clear();
-                calendar.set(year, month, dayOfMoth);
-                dueDate = calendar.getTime();
-                Log.d("TIME", "CALENDER: " + dueDate.toString());
+        calendarView.setOnDateChangeListener((calendarView, year, month, dayOfMoth) -> {
+            calendar.clear();
+            calendar.set(year, month, dayOfMoth);
+            dueDate = calendar.getTime();
+         //   Log.d("TIME", "CALENDER: " + dueDate.toString());
 
-            }
         });
         priorityButton.setOnClickListener(view13 -> {
             Utils.hideSoftKeyboard(view13);
@@ -167,7 +172,9 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
             String task = enterTodo.getText().toString().trim();
 
             if (!TextUtils.isEmpty(task) && dueDate != null && priority != null && dueTime != null) {
-                calenderForTimeAux.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+                calenderForTimeAux.set(calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH));
                 setDateNTime = calenderForTimeAux.getTime();
                 Task myTask = new Task(task, priority,
                         setDateNTime, Calendar.getInstance().getTime(),
@@ -182,27 +189,80 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
                     updateTask.setTask(task);
                     updateTask.setDateCreated(Calendar.getInstance().getTime());
                     updateTask.setPriority(priority);
-                    updateTask.setDueDate(dueDate);
+                    updateTask.setDueDate(setDateNTime);
                     updateTask.setRadioSelected(false);
                     TaskViewModel.update(updateTask);
-                    sharedViewModel.setIsEdit(false);
+                   // creatAlarmForTodo(task);
+                    //todo add alarm and notification code
 
+                    sharedViewModel.setIsEdit(false);
 
                 } else {
                     TaskViewModel.insert(myTask);
+                    //todo add alarm and notification codes
+                    Intent alarmIntent = new Intent(requireActivity(), TaskBroadcastReceiver.class);
+                    alarmIntent.putExtra("TITLE", task);
+                    alarmIntent.putExtra("PRIORITY", priority);
+                    alarmIntent.putExtra("DATE", Utils.formatDate(setDateNTime));
+
+
+                    Log.d(TAG, "createAlarmForTodo: ");
+                    @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast
+                            (requireActivity(),count, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                            PendingIntent.FLAG_UPDATE_CURRENT
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                      //  alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis(), pendingIntent);
+                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis(), pendingIntent);
+                        count++;
+                    }
+                    //    createAlarmForTodo(myTask.getTask());
+                    // todo check
+
                 }
+
+
+
                 enterTodo.setText("");
                 if (this.isVisible()) {
                     this.dismiss();
                 }
 
-            }else {
+            }
+            else {
                 Snackbar.make(saveButton, R.string.empty_field, Snackbar.LENGTH_LONG)
                         .show();
             }
         });
 
 
+    }
+
+    private void createAlarmForTodo(String task) {
+        try {
+
+            Intent alarmIntent = new Intent(requireActivity(), TaskBroadcastReceiver.class);
+            alarmIntent.putExtra("TITLE", task);
+            alarmIntent.putExtra("PRIORITY", priority);
+            alarmIntent.putExtra("DATE", Utils.formatDate(setDateNTime));
+
+
+            Log.d(TAG, "createAlarmForTodo: ");
+            @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast
+                    (requireActivity(),count, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                            PendingIntent.FLAG_UPDATE_CURRENT
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis(), pendingIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis(), pendingIntent);
+                count ++;
+
+//                                PendingIntent intent = PendingIntent.getBroadcast(requireActivity(), count, alarmIntent, 0);
+//                                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis() - 600000, intent);
+//                                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis() - 600000, intent);
+//                                count ++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -215,7 +275,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
             //set data for today
             calendar.add(Calendar.DAY_OF_YEAR, 0);
             dueDate = calendar.getTime();
-            Log.d("TIME", "onClick: " + dueDate.toString());
+         //   Log.d("TIME", "onClick: " + dueDate.toString());
 
 
         } else if (id == R.id.tomorrow_chip) {
@@ -224,7 +284,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
             //set data for tomorrow
             calendar.add(Calendar.DAY_OF_YEAR, 1);
             dueDate = calendar.getTime();
-            Log.d("TIME", "TOMORROW: " + dueDate.toString());
+        //    Log.d("TIME", "TOMORROW: " + dueDate.toString());
 
 
         } else if (id == R.id.next_week_chip) {
@@ -233,7 +293,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
             //set data for next week
             calendar.add(Calendar.DAY_OF_YEAR, 7);
             dueDate = calendar.getTime();
-            Log.d("TIME", "NEXT WEEK: " + dueDate.toString());
+        //    Log.d("TIME", "NEXT WEEK: " + dueDate.toString());
 
         }
 

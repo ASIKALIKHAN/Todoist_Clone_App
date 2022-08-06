@@ -11,9 +11,11 @@
         <entry key="..\:/Todoister-starter-project/Todoister/app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.176" />
         <entry key="..\:/Todoister-starter-project/Todoister/app/src/main/res/drawable/ic_baseline_wb_sunny_24.xml" value="0.2675" />
         <entry key="..\:/Todoister-starter-project/Todoister/app/src/main/res/layout/activity_about.xml" value="0.264" />
+        <entry key="..\:/Todoister-starter-project/Todoister/app/src/main/res/layout/activity_alarm.xml" value="0.264" />
         <entry key="..\:/Todoister-starter-project/Todoister/app/src/main/res/layout/activity_main.xml" value="0.27447916666666666" />
         <entry key="..\:/Todoister-starter-project/Todoister/app/src/main/res/layout/bottom_sheet.xml" value="0.27447916666666666" />
         <entry key="..\:/Todoister-starter-project/Todoister/app/src/main/res/layout/delete_todo_dialogue.xml" value="0.27447916666666666" />
+        <entry key="..\:/Todoister-starter-project/Todoister/app/src/main/res/layout/empty_todo_indicator.xml" value="0.2734375" />
         <entry key="..\:/Todoister-starter-project/Todoister/app/src/main/res/layout/fragment_bottom_sheet.xml" value="0.27447916666666666" />
         <entry key="..\:/Todoister-starter-project/Todoister/app/src/main/res/layout/todo_row.xml" value="0.27447916666666666" />
         <entry key="..\:/Todoister-starter-project/Todoister/app/src/main/res/menu/menu_main.xml" value="0.264" />

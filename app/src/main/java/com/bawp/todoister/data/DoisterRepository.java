@@ -32,7 +32,12 @@ public class DoisterRepository {
         TaskRoomDatabase.service.execute(() -> taskDao.updateTask(task));
     }
     public void delete(Task task){
-        TaskRoomDatabase.service.execute(() -> taskDao.deleteTask(task));
+        TaskRoomDatabase.service.execute(new Runnable() {
+            @Override
+            public void run() {
+                taskDao.deleteTask(task);
+            }
+        });
     }
 
     public void deleteAll(){

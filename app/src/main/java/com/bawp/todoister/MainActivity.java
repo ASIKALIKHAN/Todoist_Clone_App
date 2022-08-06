@@ -26,10 +26,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import java.util.List;
 import java.util.Objects;
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewTaskAdapter recyclerViewTaskAdapter;
     private TaskViewModel taskViewModel;
     private SharedViewModel sharedViewModel;
+    private ConstraintLayout noTodoLayout;
     private static boolean deleteReadyForMenu = false;
 
     @Override
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        noTodoLayout = findViewById(R.id.status_no_todo);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -70,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
         sharedViewModel = new ViewModelProvider(this)
                 .get(SharedViewModel.class);
-
 
         recyclerViewTaskAdapter = new RecyclerViewTaskAdapter();
         recyclerView.setAdapter(recyclerViewTaskAdapter);
@@ -110,12 +110,24 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onTodoRadioButtonClick(Task task, int position) {
-                deleteReadyForMenu= true;
-                task.setRadioSelected(!task.isRadioSelected);
-                TaskViewModel.update(task);
+                deleteReadyForMenu = true;
+                task.setRadioSelected(!task.isRadioSelected); // with each click the state(isRadioSelected) is toggled
+                TaskViewModel.update(task); //setting the radiobutn as true
             //    Toast.makeText(MainActivity.this, "LOOK"+ task.getTask() +" :"+task.isRadioSelected, Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            public void onNoTodoEvent(boolean emptyTodo) {
+                if(emptyTodo){
+             noTodoLayout.setVisibility(View.VISIBLE);}
+                else{
+                    noTodoLayout.setVisibility(View.GONE);
+                }
+            }
         });
+
+
+        // if(taskViewModel.getAllTask())
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> showBottomSheetDialog());
     }
