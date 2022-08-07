@@ -18,10 +18,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.os.Handler;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -155,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_about) {
             startActivity(new Intent(this,AboutActivity.class));
+
         }
         else if (id == R.id.action_delete_selected) {
             if(deleteReadyForMenu) {
@@ -214,8 +216,9 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(id == R.id.action_settings){
             //todo add settings features
-            Toast.makeText(MainActivity.this, R.string.toast_msg_for_underdevelopment, Toast.LENGTH_LONG).show();
-           new Handler().postDelayed(() -> Toast.makeText(getApplicationContext(), "Designed & Developed by: ❤️AIZU", Toast.LENGTH_LONG).show(),3000);
+            Intent intentTake = new Intent(MainActivity.this,SettingActivity.class);
+            startActivity(intentTake);
+         //  new Handler().postDelayed(() -> Toast.makeText(getApplicationContext(), "Designed & Developed by: ❤️AIZU", Toast.LENGTH_LONG).show(),3000);
         }
         return super.onOptionsItemSelected(item);
     }

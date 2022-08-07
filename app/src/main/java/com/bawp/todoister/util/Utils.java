@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class Utils {
+public  class Utils {
     public static String formatDate(Date date) {
         SimpleDateFormat simpleDateFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance();
 //        simpleDateFormat.applyPattern("EEE, MMM d"); h:mm a
@@ -41,5 +41,18 @@ public class Utils {
         }
         return color;
     }
+  /*  public static int priorityColorForAlarm(String task) {
+        int color;
+        if (task.equals(Priority.HIGH.toString())) {
+            color = Color.argb(150,201, 21, 23);
+        }else if (task.equals(Priority.MEDIUM.toString())) {
+            color = Color.argb(150,255, 150,0);
+        }else {
+            color = Color.argb(150, 70, 181, 255);
+        }
+        return color;
+    }
+
+   */
 }
 

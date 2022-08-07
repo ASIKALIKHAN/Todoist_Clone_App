@@ -5,6 +5,8 @@ import static android.content.Context.ALARM_SERVICE;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -40,7 +42,14 @@ import androidx.constraintlayout.widget.Group;
 import androidx.lifecycle.ViewModelProvider;
 
 public class BottomSheetFragment extends BottomSheetDialogFragment implements View.OnClickListener {
-    private static final String TAG = "see";
+    public static final String TAG = "see";
+    public static final String NOTIFICATION_CHANNEL_ID_KEY ="Notification For Task";
+
+    public static final String TASK_KEY ="TASK";
+    public static final String TITLE_KEY ="TITLE";
+    public static final String PRIORITY_KEY ="PRIORITY";
+    public static final String DATE_KEY ="DATE";
+
     Calendar calendar = Calendar.getInstance();
     private EditText enterTodo;
     private ImageButton calendarButton;
@@ -65,14 +74,13 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
     private  final Calendar calenderForTimeAux = Calendar.getInstance();
     public static int count = 0;
     private AlarmManager alarmManager;
+    private NotificationManager notifyManager;
 
     public BottomSheetFragment() {
     }
 
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.bottom_sheet, container, false);
 
@@ -120,9 +128,6 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
 
         });
         timeButton.setOnClickListener(view14 -> {
-//                timePicker.setVisibility(timePicker.getVisibility() == View.GONE ?
-//                        View.VISIBLE : View.GONE);
-           // final Calendar calenderForTimeAux = Calendar.getInstance();
                  hour = calenderForTimeAux.get(Calendar.HOUR_OF_DAY);
                  minute = calenderForTimeAux.get(Calendar.MINUTE);
                  timePickerDialog = new TimePickerDialog(BottomSheetFragment.this.getActivity(), (view15, hourOfDay, minute) -> {
@@ -193,6 +198,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
                     updateTask.setRadioSelected(false);
                     TaskViewModel.update(updateTask);
                    // creatAlarmForTodo(task);
+                    createAlarm(updateTask);
                     //todo add alarm and notification code
 
                     sharedViewModel.setIsEdit(false);
@@ -200,28 +206,11 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
                 } else {
                     TaskViewModel.insert(myTask);
                     //todo add alarm and notification codes
-                    Intent alarmIntent = new Intent(requireActivity(), TaskBroadcastReceiver.class);
-                    alarmIntent.putExtra("TITLE", task);
-                    alarmIntent.putExtra("PRIORITY", priority);
-                    alarmIntent.putExtra("DATE", Utils.formatDate(setDateNTime));
-
-
-                    Log.d(TAG, "createAlarmForTodo: ");
-                    @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast
-                            (requireActivity(),count, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//                            PendingIntent.FLAG_UPDATE_CURRENT
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                      //  alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis(), pendingIntent);
-                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis(), pendingIntent);
-                        count++;
-                    }
+                    createAlarm(myTask);
                     //    createAlarmForTodo(myTask.getTask());
                     // todo check
 
                 }
-
-
-
                 enterTodo.setText("");
                 if (this.isVisible()) {
                     this.dismiss();
@@ -236,34 +225,40 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
 
 
     }
+    private void createNotification(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name = "RemainderChannel";
 
-    private void createAlarmForTodo(String task) {
-        try {
+            String description = "Channel for tasks";
 
-            Intent alarmIntent = new Intent(requireActivity(), TaskBroadcastReceiver.class);
-            alarmIntent.putExtra("TITLE", task);
-            alarmIntent.putExtra("PRIORITY", priority);
-            alarmIntent.putExtra("DATE", Utils.formatDate(setDateNTime));
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID_KEY, name, NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription(description);
 
-
-            Log.d(TAG, "createAlarmForTodo: ");
-            @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast
-                    (requireActivity(),count, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//                            PendingIntent.FLAG_UPDATE_CURRENT
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis(), pendingIntent);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis(), pendingIntent);
-                count ++;
-
-//                                PendingIntent intent = PendingIntent.getBroadcast(requireActivity(), count, alarmIntent, 0);
-//                                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis() - 600000, intent);
-//                                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis() - 600000, intent);
-//                                count ++;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            notifyManager = requireActivity().getSystemService(NotificationManager.class);
+            notifyManager.createNotificationChannel(channel);
         }
     }
+    private void createAlarm(Task myTask) {
+        createNotification();
+        Intent alarmIntent = new Intent(requireActivity(), TaskBroadcastReceiver.class);
+        alarmIntent.putExtra(TASK_KEY,myTask.getTaskId());
+        alarmIntent.putExtra(TITLE_KEY, myTask.getTask());
+        alarmIntent.putExtra(PRIORITY_KEY, myTask.getPriority().toString());
+        alarmIntent.putExtra(DATE_KEY, (Utils.formatDate(myTask.getDueDate())));
+        Log.d(TAG, "createAlarmForTodo: ");
+        @SuppressLint("UnspecifiedImmutableFlag")
+        PendingIntent pendingIntent = PendingIntent
+                .getBroadcast
+                (requireActivity(), (int) myTask.getTaskId(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis(), pendingIntent);
+        }
+       alarmManager.setExact(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis(), pendingIntent);
+        //count++;
+    }
+
+
 
     @Override
     public void onClick(View view) {
@@ -297,5 +292,34 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
 
         }
 
+
+    }
+    //NOT USED
+    private void createAlarmForTodo(String task) {
+        try {
+
+            Intent alarmIntent = new Intent(requireActivity(), TaskBroadcastReceiver.class);
+            alarmIntent.putExtra(TITLE_KEY, task);
+            alarmIntent.putExtra(PRIORITY_KEY, priority);
+            alarmIntent.putExtra(DATE_KEY, Utils.formatDate(setDateNTime));
+
+
+            Log.d(TAG, "createAlarmForTodo: ");
+            @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast
+                    (requireActivity(),count, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                            PendingIntent.FLAG_UPDATE_CURRENT
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis(), pendingIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis(), pendingIntent);
+                count ++;
+
+//                                PendingIntent intent = PendingIntent.getBroadcast(requireActivity(), count, alarmIntent, 0);
+//                                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis() - 600000, intent);
+//                                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calenderForTimeAux.getTimeInMillis() - 600000, intent);
+//                                count ++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
