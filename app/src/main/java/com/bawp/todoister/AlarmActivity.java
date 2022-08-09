@@ -73,6 +73,7 @@ public class AlarmActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mediaPlayer.release();
+        finish();
     }
 
     private void onClick(View v) {

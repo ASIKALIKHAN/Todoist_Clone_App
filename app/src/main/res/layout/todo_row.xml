@@ -24,12 +24,15 @@
         android:text="@string/textview"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/todo_row_due_date_chip"
+        app:autoSizeMaxTextSize="@dimen/font_size_24"
+        app:autoSizeMinTextSize="@dimen/dimen_8"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/todo_radio_button"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.102" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -37,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="36dp"
+        app:layout_constraintGuide_percent="0.12"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.chip.Chip
@@ -71,7 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="28dp" />
+        app:layout_constraintGuide_percent="0.47368422" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
