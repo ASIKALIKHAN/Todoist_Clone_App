@@ -4,56 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EDC9C9"
+    android:background="#FFFFFF"
     tools:context=".AlarmActivity">
 
-    <TextView
-        android:id="@+id/textview_todo_title_alarm"
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical"
-        android:maxEms="12"
-        android:text="@string/alarm_msg"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline4" />
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/my_gradient"
+        android:maxWidth="200dp"
+        android:maxHeight="48dp"
+        android:padding="8dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/chip_date_time_alarm"
+        app:layout_constraintEnd_toEndOf="@+id/chip_date_time_alarm"
+        app:layout_constraintStart_toStartOf="@+id/chip_date_time_alarm"
+        app:layout_constraintTop_toBottomOf="@+id/lotteViewAnim">
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip_priority_alarm"
-        style="@style/TextAppearance.AppCompat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/alarm_aux_prioritytag"
-        app:chipIcon="@drawable/ic_baseline_alert_priority"
-        app:layout_constraintEnd_toEndOf="@+id/textview_todo_title_alarm"
-        app:layout_constraintHorizontal_bias="0.488"
-        app:layout_constraintStart_toStartOf="@+id/textview_todo_title_alarm"
-        app:layout_constraintTop_toBottomOf="@+id/textview_todo_title_alarm" />
+        <TextView
+            android:id="@+id/textview_todo_title_alarm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dimen_10"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/alarm_msg"
+            android:textColor="@color/my_text_color"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+    </androidx.cardview.widget.CardView>
 
     <com.google.android.material.chip.Chip
         android:id="@+id/chip_date_time_alarm"
         style="@style/TextAppearance.AppCompat.Large"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:layout_marginTop="28dp"
-        android:text="Date And Time"
+        android:layout_marginBottom="12dp"
+        android:text="@string/date_and_time"
         app:chipIcon="@drawable/ic_baseline_alarm_execute"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintEnd_toEndOf="@+id/chip_priority_alarm"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="@+id/chip_priority_alarm"
-        app:layout_constraintTop_toBottomOf="@+id/chip_priority_alarm"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.29" />
+        app:layout_constraintGuide_percent="0.5" />
 
     <Button
         android:id="@+id/button_off_alarm"
@@ -70,5 +66,17 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.7" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lotteViewAnim"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_repeatMode="reverse"
+        app:lottie_rawRes="@raw/red_alarm_bell_up"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

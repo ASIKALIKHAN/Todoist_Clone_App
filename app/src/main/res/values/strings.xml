@@ -27,7 +27,7 @@
     <string name="radio_low">Low</string>
     <string name="image_description">button image</string>
     <string name="about_text">Todoist Clone App - by ASIK - version 0.1</string>
-    <string name="add_todos">Add a Todo...</string>
+    <string name="add_todos">Add a Todo…</string>
     <string name="delete_todo">Delete Selected</string>
     <string name="delete_all_todo">Delete All</string>
     <string name="todo_delete_select_msg">SELECTED TODO\'S WILL BE DELETED!</string>
@@ -38,8 +38,7 @@
     <string name="single_todo_warning">TODO WILL BE DELETED!</string>
     <string name="settings">Settings</string>
     <string name="toastmsg_on_cancel">DELETE OPERATION CANCELED</string>
-    <string name="toast_msg_for_underdevelopment"><![CDATA[New features are coming soon...]]></string>
-    <string name="about_msg_new">Todoist App - by ♡AIZU - version 1.2.3</string>
+    <string name="about_msg_new">Todoist Clone App - by ♡Asik Ali Khan - version 1.2.6</string>
     <string name="textview">TextView</string>
     <string name="no_todo_to_show">No Todo to Show</string>
     <string name="alarm_msg">your todo is here</string>
@@ -49,4 +48,10 @@
     <string name="alarm_for_tasks">Alarm for Tasks</string>
     <string name="set_background_wallpaper">Set Wallpaper</string>
     <string name="button_operation">Save Changes</string>
+    <string name="i_am_an_android_enthusiast_trying_to_make">write a description here if any</string>
+    <string name="no_description">Not available</string>
+    <string name="dateSelected">Date: </string>
+    <string name="timeSelected">Time: </string>
+    <string name="date_and_time">Date And Time</string>
+
 </resources>

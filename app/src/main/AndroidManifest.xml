@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.bawp.todoister">
+    package="com.xino.todoister">
     <uses-permission android:name="android.permission.SET_ALARM"/>
     <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application
         android:allowBackup="true"
@@ -16,18 +16,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Todoister">
         <activity
-            android:name=".SettingActivity"
+            android:name="com.xino.todoister.SettingActivity"
             android:exported="false" />
         <activity
-            android:name=".AlarmActivity"
+            android:name="com.xino.todoister.AlarmActivity"
             android:exported="false"
-            android:theme="@style/Theme.Todoister.NoActionBar" />
-        <activity android:name=".AboutActivity" />
+            android:showWhenLocked="true"
+            android:theme="@style/Theme.Todoister.NoActionBar"
+            android:turnScreenOn="true"
+            tools:targetApi="o_mr1" />
+        <activity android:name="com.xino.todoister.AboutActivity"
+            android:exported="false"/>
         <activity
-            android:name=".MainActivity"
+            android:name="com.xino.todoister.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.xino.todoister.MainActivity"
             android:theme="@style/Theme.Todoister.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,16 +41,16 @@
         </activity>
 
         <receiver
-            android:name=".broadcast.TaskBroadcastReceiver"
+            android:name="com.xino.todoister.broadcast.TaskBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <service android:name=".broadcast.TaskService"
-            android:enabled="true"
-            android:exported="true"/>
+<!--        <service android:name=".broadcast.TaskService"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true"/>-->
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
