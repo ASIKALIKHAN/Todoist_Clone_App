@@ -1,6 +1,5 @@
 # Todoist_Clone_App
-Work on progress soon the app will be here...fixing some bugs.
-
+new features will be added soon
 
 submitted by: Asik Ali Khan
 
