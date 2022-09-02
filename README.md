@@ -32,7 +32,11 @@ The following optional features are implemented:
 ☑ Add press again to back.
 
 
+
+
 #Screenshots of app
+
+
 
 ![ScreenshotsTodoistClone](https://user-images.githubusercontent.com/108247266/185929796-e5a08ac1-9559-4b84-ad34-781891bfb109.png)
 
